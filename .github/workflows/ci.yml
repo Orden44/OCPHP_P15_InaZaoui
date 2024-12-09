@@ -33,8 +33,8 @@ jobs:
           composer install
       - name: Doctrine
         run: |
-          # php bin/console doctrine:database:drop -f --if-exists --env=test
-          # php bin/console doctrine:database:create --env=test
+          php bin/console doctrine:database:drop -f --if-exists --env=test
+          php bin/console doctrine:database:create --env=test
           php bin/console doctrine:migrations:migrate -n --env=test
           php bin/console doctrine:fixtures:load -n --env=test
       - name: Tests
