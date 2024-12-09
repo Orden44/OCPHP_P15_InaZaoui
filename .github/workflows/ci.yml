@@ -31,6 +31,8 @@ jobs:
         run: |
           docker compose -f "docker-compose.yml" up -d --build
           composer install
+      - name: Doctrine
+        run: |
           php bin/console doctrine:database:drop -f --if-exists --env=test
           php bin/console doctrine:database:create --env=test
           php bin/console doctrine:migrations:migrate -n --env=test
