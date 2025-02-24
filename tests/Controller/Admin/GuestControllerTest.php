@@ -141,7 +141,9 @@ class GuestControllerTest extends WebTestCase
     public function testConstructGuest(): void
     {
         $passwordHasher = self::getContainer()->get('security.password_hasher');
-        $guest = new GuestController($this->entityManager, $passwordHasher);
-        self::assertNotNull($guest);
-    }
+        $guestController = new GuestController($this->entityManager, $passwordHasher);
+        
+        self::assertInstanceOf(GuestController::class, $guestController);
+        self::assertSame($this->entityManager, $guestController->getEntityManager());
+        self::assertSame($passwordHasher, $guestController->getPasswordHasher());    }
 }
