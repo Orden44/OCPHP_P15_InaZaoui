@@ -79,6 +79,13 @@ class AlbumControllerTest extends WebTestCase
             'name' => 'Montagne',
         ]);
 
+        if ($album === null) {
+            $album = new Album();
+            $album->setName('Montagne');
+            $this->entityManager->persist($album);
+            $this->entityManager->flush();
+        }
+
         $crawler = $this->client->request('GET', '/admin/album/update/' . $album->getId());
         self::assertResponseIsSuccessful();
 

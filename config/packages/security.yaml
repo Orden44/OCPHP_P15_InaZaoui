@@ -1,5 +1,6 @@
 security:
-    enable_authenticator_manager: true
+    # Supprimer l'option dépréciée
+    # enable_authenticator_manager: true
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     providers:
@@ -12,6 +13,7 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
             lazy: true
             provider: app_user_provider

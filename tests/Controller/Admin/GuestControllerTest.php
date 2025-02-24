@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller\Admin;
 
+use App\Controller\Admin\GuestController;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -135,5 +136,12 @@ class GuestControllerTest extends WebTestCase
         self::assertResponseRedirects('/admin/guest');
 
         self::assertNull($this->entityManager->getRepository(User::class)->find($userId));
+    }
+
+    public function testConstructGuest(): void
+    {
+        $passwordHasher = self::getContainer()->get('security.password_hasher');
+        $guest = new GuestController($this->entityManager, $passwordHasher);
+        self::assertNotNull($guest);
     }
 }
