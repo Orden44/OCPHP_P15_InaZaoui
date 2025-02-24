@@ -22,15 +22,15 @@ class GuestController extends AbstractController
     {
     }
 
-    public function getEntityManager(): EntityManagerInterface
-    {
-        return $this->entityManager;
-    }
+    // public function getEntityManager(): EntityManagerInterface
+    // {
+    //     return $this->entityManager;
+    // }
 
-    public function getPasswordHasher(): UserPasswordHasherInterface
-    {
-        return $this->userPasswordHasher;
-    }
+    // public function getPasswordHasher(): UserPasswordHasherInterface
+    // {
+    //     return $this->userPasswordHasher;
+    // }
     
     #[Route('/admin/guest', name: 'admin_guest_index')]
     public function index(): Response
