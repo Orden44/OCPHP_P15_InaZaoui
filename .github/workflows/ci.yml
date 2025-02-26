@@ -32,6 +32,8 @@ jobs:
           docker compose -f "docker-compose.yml" up -d --build
           composer install
       - name: Doctrine
+        env:
+          DATABASE_URL: "mysql://root:password@127.0.0.1:3306/inazaoui_test?serverVersion=10.4.28-MariaDB&charset=utf8mb4"
         run: |
           php bin/console doctrine:database:drop -f --if-exists --env=test
           php bin/console doctrine:database:create --env=test
