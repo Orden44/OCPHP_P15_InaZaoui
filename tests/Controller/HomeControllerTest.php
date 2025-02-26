@@ -2,12 +2,17 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\User;
-use App\Entity\Album;
-use App\Entity\Media;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use App\DataFixtures\AppFixtures;
+use App\DataFixtures\AlbumFixtures;
+use App\DataFixtures\MediaFixtures;
+use App\DataFixtures\UserFixtures;
+use App\Entity\Album;
+use App\Entity\Media;
+use App\Entity\User;
 
 class HomeControllerTest extends WebTestCase
 {
@@ -18,6 +23,15 @@ class HomeControllerTest extends WebTestCase
     {
         $this->client = static::createClient();
         $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
+
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
+
+        $databaseTool->loadFixtures([
+            AppFixtures::class,
+            AlbumFixtures::class,
+            MediaFixtures::class,
+            UserFixtures::class
+        ]);
     }
 
     public function testHomePage(): void
@@ -91,5 +105,14 @@ class HomeControllerTest extends WebTestCase
         $username = $guest->getUsername();
         self::assertNotNull($username);
         self::assertSelectorTextContains('h3', $username);
+    }
+
+    public function testGuestPageNotFound(): void
+    {
+        // Utilisez un ID qui n'existe pas dans la base de données
+        $nonExistentId = 999999;
+        
+        $this->client->request('GET', '/guest/' . $nonExistentId);
+        self::assertResponseRedirects('/guests');
     }
 }

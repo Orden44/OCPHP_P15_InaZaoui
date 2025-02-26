@@ -2,108 +2,51 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Media;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use App\Entity\Media;
 use App\DataFixtures\UserFixtures;
 use App\DataFixtures\AlbumFixtures;
+use App\Entity\User;
+use App\Entity\Album;
 
 class MediaFixtures extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
-    public const MEDIA_1 = 'media 1';
-    public const MEDIA_2 = 'media 2';
-    public const MEDIA_3 = 'media 3';
-    public const MEDIA_4 = 'media 4';
-    public const MEDIA_5 = 'media 5';
-    public const MEDIA_6 = 'media 6';
-    public const MEDIA_7 = 'media 7';
-    public const MEDIA_8 = 'media 8';
+    public const MEDIA_DATA = [
+        ['user' => UserFixtures::USER_1, 'album' => AlbumFixtures::ALBUM_1, 'path' => 'uploads/Paysage_1.webp', 'title' => 'Paysage miroir'],
+        ['user' => UserFixtures::USER_5, 'album' => AlbumFixtures::ALBUM_1, 'path' => 'uploads/Paysage_2.webp', 'title' => 'Quai face montagne'],
+        ['user' => UserFixtures::USER_2, 'album' => AlbumFixtures::ALBUM_1, 'path' => 'uploads/Paysage_3.webp', 'title' => 'Colline verte'],
+        ['user' => UserFixtures::USER_5, 'album' => AlbumFixtures::ALBUM_3, 'path' => 'uploads/Montagne_1.webp', 'title' => 'Pic vers le ciel'],
+        ['user' => UserFixtures::USER_2, 'album' => AlbumFixtures::ALBUM_3, 'path' => 'uploads/Montagne_2.webp', 'title' => 'Chalet montagnard'],
+        ['user' => UserFixtures::USER_3, 'album' => AlbumFixtures::ALBUM_3, 'path' => 'uploads/Ville_1.webp', 'title' => 'Purple city'],
+        ['user' => UserFixtures::USER_2, 'album' => AlbumFixtures::ALBUM_2, 'path' => 'uploads/Ville_2.webp', 'title' => 'Pise'],
+        ['user' => UserFixtures::USER_2, 'album' => AlbumFixtures::ALBUM_2, 'path' => 'uploads/Ville_3.webp', 'title' => 'Paris'],
+    ];
 
     public function load(ObjectManager $manager): void
     {        
         // Création des médias
-        $media1 = new Media();
-        $media1
-            ->setUser($this->getReference(UserFixtures::USER_1))
-            ->setAlbum($this->getReference(AlbumFixtures::ALBUM_1))
-            ->setPath('uploads/Paysage_1.webp')
-            ->setTitle('Paysage miroir');
-        $manager->persist($media1);
-        $this->addReference(self::MEDIA_1, $media1);
-
-
-        $media2 = new Media();
-        $media2
-            ->setUser($this->getReference(UserFixtures::USER_5))
-            ->setAlbum($this->getReference(AlbumFixtures::ALBUM_1))
-            ->setPath('uploads/Paysage_2.webp')
-            ->setTitle('Quai face montagne');
-        $manager->persist($media2);
-        $this->addReference(self::MEDIA_2, $media2);
-
-        $media3 = new Media();
-        $media3
-            ->setUser($this->getReference(UserFixtures::USER_2))
-            ->setAlbum($this->getReference(AlbumFixtures::ALBUM_1))
-            ->setPath('uploads/Paysage_3.webp')
-            ->setTitle('Colline verte');
-        $manager->persist($media3);
-        $this->addReference(self::MEDIA_3, $media3);
-
-        $media4 = new Media();
-        $media4
-            ->setUser($this->getReference(UserFixtures::USER_5))
-            ->setAlbum($this->getReference(AlbumFixtures::ALBUM_3))
-            ->setPath('uploads/Montagne_1.webp')
-            ->setTitle('Pic vers le ciel');
-        $manager->persist($media4);
-        $this->addReference(self::MEDIA_4, $media4);
-
-        $media5 = new Media();
-        $media5
-            ->setUser($this->getReference(UserFixtures::USER_2))
-            ->setAlbum($this->getReference(AlbumFixtures::ALBUM_3))
-            ->setPath('uploads/Montagne_2.webp')
-            ->setTitle('Chalet montagnard');
-        $manager->persist($media5);
-        $this->addReference(self::MEDIA_5, $media5);
-
-        $media6 = new Media();
-        $media6
-            ->setUser($this->getReference(UserFixtures::USER_3))
-            ->setAlbum($this->getReference(AlbumFixtures::ALBUM_3))
-            ->setPath('uploads/Ville_1.webp')
-            ->setTitle('Purple city');
-        $manager->persist($media5);
-        $this->addReference(self::MEDIA_6, $media6);
-
-        $media7 = new Media();
-        $media7
-            ->setUser($this->getReference(UserFixtures::USER_2))
-            ->setAlbum($this->getReference(AlbumFixtures::ALBUM_2))
-            ->setPath('uploads/Ville_2.webp')
-            ->setTitle('Pise');
-        $manager->persist($media7);
-        $this->addReference(self::MEDIA_7, $media7);
-
-        $media8 = new Media();
-        $media8
-            ->setUser($this->getReference(UserFixtures::USER_2))
-            ->setAlbum($this->getReference(AlbumFixtures::ALBUM_2))
-            ->setPath('uploads/Ville_3.webp')
-            ->setTitle('Paris');
-        $manager->persist($media8);
-        $this->addReference(self::MEDIA_8, $media8);
+        foreach (self::MEDIA_DATA as $index => $data) {
+            $media = new Media();
+            $media->setUser($this->getReference($data['user'], User::class)) 
+                ->setAlbum($this->getReference($data['album'], Album::class)) 
+                ->setPath($data['path'])
+                ->setTitle($data['title']);
+            $manager->persist($media);
+            // Utilisation de l'index pour ajouter une référence unique
+            $this->addReference('media_' . $index, $media); 
+        }
 
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
-            UserFixtures::class, AlbumFixtures::class
+            UserFixtures::class,
+            AlbumFixtures::class,
         ];
     }
 
