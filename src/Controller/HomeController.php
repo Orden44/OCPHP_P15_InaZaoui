@@ -65,29 +65,33 @@ class HomeController extends AbstractController
     }
 
 
-    #[Route('/portfolio/{id}', name: 'portfolio')]
-    public function portfolio(?int $id = null): Response
+    #[Route('/portfolio/{id}', name: 'portfolio', requirements: ['id' => '\d+'], defaults: ['id' => null])]
+    public function portfolio(?int $id): Response
     {
         $albums = $this->entityManager->getRepository(Album::class)->findAll();
         $album = null;
-
+    
         if ($id !== null) {
             $album = $this->entityManager->getRepository(Album::class)->find($id);
+            
+            // Gérer le cas où l'album n'est pas trouvé
+            if ($album === null) {
+                return $this->redirectToRoute('portfolio'); // ou afficher un message d'erreur
+            }
         }
-
-        if ($album !== null) {
-            $medias = $this->entityManager->getRepository(Media::class)->findAllMediasNotRestrictedByAlbum($album);
-        } else {
-            $medias = $this->entityManager->getRepository(Media::class)->findAllMediasNotRestricted();
-        }
-
+    
+        // Récupération des médias selon l'album
+        $medias = $album !== null
+            ? $this->entityManager->getRepository(Media::class)->findAllMediasNotRestrictedByAlbum($album)
+            : $this->entityManager->getRepository(Media::class)->findAllMediasNotRestricted();
+    
         return $this->render('front/portfolio.html.twig', [
             'albums' => $albums,
             'album' => $album,
             'medias' => $medias
         ]);
     }
-
+    
     #[Route('/about', name: 'about')]
     public function about(): Response
     {
