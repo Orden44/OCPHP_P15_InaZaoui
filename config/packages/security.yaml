@@ -22,6 +22,7 @@ security:
                 check_path: admin_login
             logout:
                 path: app_logout
+                target: /
             pattern: ^/
             user_checker: App\Security\UserChecker
     access_control:
