@@ -32,19 +32,20 @@ class HomeControllerTest extends WebTestCase
         //     MediaFixtures::class,
         //     UserFixtures::class
         // ]);
-        $fixtures = [
-            AppFixtures::class,
-            AlbumFixtures::class,
-            MediaFixtures::class,
-            UserFixtures::class,
-        ];
         
-        foreach ($fixtures as $fixtureClass) {
-            $fixture = new $fixtureClass();
-            $fixture->load($this->entityManager);
-        }
+        // $fixtures = [
+        //     AppFixtures::class,
+        //     AlbumFixtures::class,
+        //     MediaFixtures::class,
+        //     UserFixtures::class,
+        // ];
+        
+        // foreach ($fixtures as $fixtureClass) {
+        //     $fixture = new $fixtureClass();
+        //     $fixture->load($this->entityManager);
+        // }
     
-        $this->entityManager->flush();
+        // $this->entityManager->flush();
     }
 
     public function testHomePage(): void
