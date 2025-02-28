@@ -8,4 +8,4 @@ services:
       - MYSQL_PASSWORD=password
       - MYSQL_USER=Ina
       - MYSQL_DATABASE=inazaoui
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=password
