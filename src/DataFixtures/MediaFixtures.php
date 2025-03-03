@@ -11,7 +11,6 @@ use App\DataFixtures\UserFixtures;
 use App\DataFixtures\AlbumFixtures;
 use App\Entity\User;
 use App\Entity\Album;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class MediaFixtures extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
@@ -25,8 +24,6 @@ class MediaFixtures extends Fixture implements FixtureGroupInterface, DependentF
         ['user' => UserFixtures::USER_2, 'album' => AlbumFixtures::ALBUM_2, 'path' => 'uploads/Ville_2.webp', 'title' => 'Pise'],
         ['user' => UserFixtures::USER_2, 'album' => AlbumFixtures::ALBUM_2, 'path' => 'uploads/Ville_3.webp', 'title' => 'Paris'],
     ];
-
-    public function __construct(private UserPasswordHasherInterface $encoder) { }
 
     public function load(ObjectManager $manager): void
     {        
