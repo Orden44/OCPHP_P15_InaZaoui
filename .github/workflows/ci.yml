@@ -22,7 +22,7 @@ jobs:
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -44,4 +44,4 @@ jobs:
       - name: Tests
         run: php bin/phpunit
       - name: Analysis
-        run: php vendor/bin/phpstan
+        run: php -d memory_limit=512M vendor/bin/phpstan
