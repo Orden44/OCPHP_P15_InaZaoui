@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use App\DataFixtures\AppFixtures;
 use App\DataFixtures\AlbumFixtures;
 use App\DataFixtures\MediaFixtures;
@@ -18,34 +19,20 @@ class HomeControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
     private EntityManagerInterface $entityManager;
+    /** @var AbstractDatabaseTool */
+    protected $databaseTool;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
         $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
-
-        // $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        // $databaseTool->loadFixtures([
-        //     AppFixtures::class,
-        //     AlbumFixtures::class,
-        //     MediaFixtures::class,
-        //     UserFixtures::class
-        // ]);
-        
-        // $fixtures = [
-        //     AppFixtures::class,
-        //     AlbumFixtures::class,
-        //     MediaFixtures::class,
-        //     UserFixtures::class,
-        // ];
-        
-        // foreach ($fixtures as $fixtureClass) {
-        //     $fixture = new $fixtureClass();
-        //     $fixture->load($this->entityManager);
-        // }
-    
-        // $this->entityManager->flush();
+        $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
+        $this->databaseTool->loadFixtures([
+            AppFixtures::class,
+            AlbumFixtures::class,
+            MediaFixtures::class,
+            UserFixtures::class
+        ]);
     }
 
     public function testHomePage(): void
