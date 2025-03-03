@@ -26,13 +26,14 @@ class HomeControllerTest extends WebTestCase
     {
         $this->client = static::createClient();
         $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
-        $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
-        $this->databaseTool->loadFixtures([
-            AppFixtures::class,
-            AlbumFixtures::class,
-            MediaFixtures::class,
-            UserFixtures::class
-        ]);
+
+        // $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
+        // $this->databaseTool->loadFixtures([
+        //     AppFixtures::class,
+        //     AlbumFixtures::class,
+        //     MediaFixtures::class,
+        //     UserFixtures::class
+        // ]);
     }
 
     public function testHomePage(): void
