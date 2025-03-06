@@ -69,6 +69,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
+    /**
+     * @param string $username
+     * @return static
+     */
     public function setUsername(string $username): static
     {
         $this->username = $username;
@@ -141,6 +145,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setEmail(?string $email): static
     {
+        if ($email !== null && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new \InvalidArgumentException("Invalid email format.");
+        }
         $this->email = $email;
 
         return $this;
@@ -209,6 +216,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->restricted = $restricted;
 
+        return $this;
+    }
+
+    public function addRole(string $role): static
+    {
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+        return $this;
+    }
+
+    public function removeRole(string $role): static
+    {
+        if (false !== $key = array_search($role, $this->roles, true)) {
+            unset($this->roles[$key]);
+        }
         return $this;
     }
 }

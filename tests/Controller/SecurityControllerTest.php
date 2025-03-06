@@ -43,10 +43,16 @@ class SecurityControllerTest extends WebTestCase
         ]);
         self::assertNotNull($user);
 
+        // Simuler la connexion de l'utilisateur
         $this->client->loginUser($user);
+
+        // Simuler une déconnexion
         $this->client->request('GET', '/logout');
+
+        // Vérifier que l'utilisateur est redirigé après la déconnexion
         self::assertResponseRedirects('/');
 
+        // Suivre la redirection et vérifier la présence du lien de connexion
         $this->client->followRedirect();
         self::assertSelectorExists('a[href="/login"]');
     }

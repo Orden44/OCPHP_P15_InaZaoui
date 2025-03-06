@@ -27,5 +27,5 @@ symfony php bin/phpunit
 ```
 
 ```bash
-vendor/bin/phpstan analyse
+vendor/bin/phpstan analyse --memory-limit=512M
 ```

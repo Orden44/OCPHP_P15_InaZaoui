@@ -74,7 +74,7 @@ symfony php bin/phpunit --coverage-html public/test-coverage
 #### Exécuter les tests PHPStan
 
 ```bash
-vendor/bin/phpstan analyse
+vendor/bin/phpstan analyse --memory-limit=512M
 ```
 
 ### Serveur web
